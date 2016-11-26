@@ -395,6 +395,11 @@ void attachISRProc();
  ***********************************************************/
 void detachISRProc();
 
+/**
+ * attach callback
+ **/
+void setCallback(int (*isrCallback)(void));
+
 void setDebug() { debug = true;}
 void clearDebug() { debug= false;}
 
@@ -417,7 +422,6 @@ char getOFFZ();
 void setRangeSetting(int gScaleRange) { gScaleRange_ = gScaleRange; } //call this before setFullResBit()
 void setFullResBit(boolean highRes) { dataMode(highRes,gScaleRange_); }
 void readAccel(int *x, int *y, int *z) { xyz(*x,*y,*z); }
-
 
 
 private:
@@ -451,7 +455,8 @@ private:
 	volatile boolean ISRFlag;
 	volatile unsigned long measure_time_;
 	static MMA8451_n0m1* pMMA8451_n0m1; //ptr to MMA8451_n0m1 class for the ISR
- 
+
+ 	int (*ISR_callback)(void);
 };
 
 #endif

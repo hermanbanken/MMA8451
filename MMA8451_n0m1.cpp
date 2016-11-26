@@ -46,6 +46,7 @@ MMA8451_n0m1::MMA8451_n0m1()
 	off_x=0;
 	off_y=0;
 	off_z=0;
+	ISR_callback = NULL;
 }
 
 /***********************************************************
@@ -235,6 +236,13 @@ if( arduinoINTPin_ == 2 || arduinoINTPin_== 3)
 	 }
 }
 
+/**
+ * attach callback
+ **/
+void MMA8451_n0m1::setCallback(int (*isrCallback)(void)) 
+{
+	ISR_callback = isrCallback;
+}
 
 
 /*************************************************************
@@ -598,6 +606,9 @@ void accelISR(void){
 	MMA8451_n0m1::pMMA8451_n0m1->ISRFlag = true;
 	MMA8451_n0m1::pMMA8451_n0m1->measure_time_= millis();
 
+  if (MMA8451_n0m1::pMMA8451_n0m1->ISR_callback != NULL) {
+    MMA8451_n0m1::pMMA8451_n0m1->ISR_callback();
+	}
 }
 
 /***********************************************************
